@@ -13,6 +13,9 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
 
     steps:
     - name: Checkout code
@@ -28,7 +31,6 @@ jobs:
 
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
-      working-directory: ./client
 
     - name: Create .env.local
       run: |
@@ -36,16 +38,14 @@ jobs:
         echo VITE_BE_URL=$VITE_BE_URL >> .env.local
       env:
         VITE_BE_URL: ${{ secrets.VITE_BE_URL }}
-      working-directory: ./client
 
     - name: Build website
       run: |-
           pnpm build
           > dist/.nojekyll
-      working-directory: ./client
 
     - name: Deploy website
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages
-        folder: client/dist
+        folder: dist
