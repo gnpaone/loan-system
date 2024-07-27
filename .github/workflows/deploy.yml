@@ -20,11 +20,16 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      with:
-        path: client
 
     - name: List contents of root
-      run: ls -la
+      run: |-
+          ls -la
+          cd client
+          ls -la
+
+    - name: List contents
+      run: |-
+          ls -la
 
     # - uses: pnpm/action-setup@v4
     #   name: Install pnpm
