@@ -40,7 +40,7 @@ jobs:
           > dist/.nojekyll
 
     - name: Deploy website
-      uses: JamesIves/github-pages-deploy-action@v4
+      uses: peaceiris/actions-gh-pages@v4
       with:
-        branch: gh-pages
-        folder: dist
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist
