@@ -8,7 +8,7 @@
 
 *server will be running on Port 5000 and client on 5173*
 
-Note: Add the following environment variables
+**Note:** Add the following environment variables
 
 client
 ```
