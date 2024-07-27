@@ -1,0 +1,55 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - uses: pnpm/action-setup@v4
+      name: Install pnpm
+      with:
+        version: 8
+        run_install: false
+
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      working-directory: ./client
+
+    - name: Create .env.local
+      run: |
+        touch .env.local
+        echo VITE_BE_URL=$VITE_BE_URL >> .env.local
+      env:
+        VITE_BE_URL: ${{ secrets.VITE_BE_URL }}
+      working-directory: ./client
+
+    - name: Build website
+      run: |-
+          pnpm build
+          > dist/.nojekyll
+      working-directory: ./client
+
+    - name: Deploy website
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages
+        folder: client/dist
