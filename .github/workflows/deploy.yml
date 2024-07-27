@@ -21,41 +21,26 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: List contents of root
+    - name: Install pnpm
+      run: npm install -g pnpm
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Create .env.local
+      run: |
+        touch .env.local
+        echo VITE_BE_URL=$VITE_BE_URL >> .env.local
+      env:
+        VITE_BE_URL: ${{ secrets.VITE_BE_URL }}
+
+    - name: Build website
       run: |-
-          ls -la
-          cd client
-          ls -la
+          pnpm build
+          > dist/.nojekyll
 
-    - name: List contents
-      run: |-
-          ls -la
-
-    # - uses: pnpm/action-setup@v4
-    #   name: Install pnpm
-    #   with:
-    #     version: 8
-    #     run_install: |
-    #       - recursive: true
-    #         args: [--frozen-lockfile, --strict-peer-dependencies]
-
-    # - name: Install dependencies
-    #   run: pnpm install --frozen-lockfile
-
-    # - name: Create .env.local
-    #   run: |
-    #     touch .env.local
-    #     echo VITE_BE_URL=$VITE_BE_URL >> .env.local
-    #   env:
-    #     VITE_BE_URL: ${{ secrets.VITE_BE_URL }}
-
-    # - name: Build website
-    #   run: |-
-    #       pnpm build
-    #       > dist/.nojekyll
-
-    # - name: Deploy website
-    #   uses: JamesIves/github-pages-deploy-action@v4
-    #   with:
-    #     branch: gh-pages
-    #     folder: dist
+    - name: Deploy website
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages
+        folder: dist
