@@ -20,6 +20,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        path: client
 
     - uses: pnpm/action-setup@v4
       name: Install pnpm
@@ -44,8 +46,8 @@ jobs:
           pnpm build
           > dist/.nojekyll
 
-    - name: Deploy website
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        branch: gh-pages
-        folder: dist
+    # - name: Deploy website
+    #   uses: JamesIves/github-pages-deploy-action@v4
+    #   with:
+    #     branch: gh-pages
+    #     folder: dist
