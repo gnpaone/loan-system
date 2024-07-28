@@ -68,7 +68,9 @@ function App() {
       path: "/createLoan",
       element: <ProtectedRoutes component={<CreateLoan />} />,
     },
-  ]);
+  ], {
+  basename: "/loan-system/",
+});
 
   return (
     <>
