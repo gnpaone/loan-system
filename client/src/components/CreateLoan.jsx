@@ -8,10 +8,11 @@ const CreateLoan = () => {
   const [term, setTerm] = useState("");
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
+  
   const handleFormSubmit = async (e) => {
     try {
       e.preventDefault();
-      if (!amount || !term) throw "Fill all details!";
+      if (!amount || !term) throw new Error("Fill all details!");
       await axios.post(
         `${import.meta.env.VITE_BE_URL}/api/v1/loans/create`,
         { amount, terms: term },
@@ -31,31 +32,36 @@ const CreateLoan = () => {
   };
 
   return (
-    <div className="CreateLoan">
-      <div>
-        <h2>Loan Application Form</h2>
-        <form onSubmit={handleFormSubmit}>
-          <label>
-            Amount:
+    <div className="container mx-auto p-4">
+      <div className="max-w-md mx-auto bg-white p-8 border border-gray-300 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold mb-4">Loan Application Form</h2>
+        <form onSubmit={handleFormSubmit} className="space-y-4">
+          <div>
+            <label className="block text-gray-700">Amount:</label>
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               required
+              className="w-full p-2 border border-gray-300 rounded mt-1"
             />
-          </label>
-          <br />
-          <label>
-            Terms:
+          </div>
+          <div>
+            <label className="block text-gray-700">Terms:</label>
             <input
               type="number"
               value={term}
               onChange={(e) => setTerm(e.target.value)}
               required
+              className="w-full p-2 border border-gray-300 rounded mt-1"
             />
-          </label>
-          <br />
-          <button type="submit">Submit</button>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded mt-4"
+          >
+            Submit
+          </button>
         </form>
       </div>
     </div>
